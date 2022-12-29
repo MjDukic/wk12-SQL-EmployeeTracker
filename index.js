@@ -5,7 +5,7 @@ const { viewAllDepartments, addDepartment } = require("./db/departments");
 const { viewAllRoles, addRoles } = require("./db/roles");
 const { viewAllEmployees } = require("./db/employees");
 
-//asking the question and awaiting the response with the switch statement
+//asking the question and AWAITing the response with the switch statement
 const start = async () => {
     console.log("Welcome to the Employee Manager!");
     const { choice } = await prompt([

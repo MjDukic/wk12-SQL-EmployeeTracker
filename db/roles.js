@@ -1,6 +1,6 @@
 const db = require("./connection");
 const { prompt } = require("inquirer");
-const { viewAllDepartments, addDepartment } = require("./departments");
+const { viewAllDepartments } = require("./departments");
 
 async function viewAllRoles() {
     try {
@@ -11,7 +11,8 @@ async function viewAllRoles() {
         console.log(err)
     }
 }
-//to add role with department name, need to get the department name from the department table
+//to add role with department name, need to get the department name from the department table,
+// which is why i used const departmentName 
 async function addRoles() {
     const departmentName = await viewAllDepartments();
     try {
@@ -39,6 +40,7 @@ async function addRoles() {
             }
 
         ])
+    //values need to match the prompt in query
         await db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${department_id}")`)
         const newRole = await viewAllRoles();
         return newRole;

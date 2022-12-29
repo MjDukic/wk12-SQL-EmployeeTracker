@@ -11,6 +11,9 @@ async function viewAllDepartments() {
     }
 }
 
+//help from oop activities 
+
+//need to add name with {} and match it in query or else itll just add "option" and be undefined
 async function addDepartment() {
     try {
         const { name } = await prompt([
