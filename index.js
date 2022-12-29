@@ -1,9 +1,9 @@
 
 const { prompt } = require("inquirer");
 const db = require("./db/connection");
+const { viewAllDepartments } = require("./db/departments");
 
-//since using async, we dont have to use then
-//avoid using then keyword
+//asking the question and awaiting the response with the switch statement
 const start = async () => {
     console.log("Welcome to the Employee Manager!");
     const { choice } = await prompt([
@@ -27,6 +27,7 @@ const start = async () => {
 
     switch (choice) {
         case 'View all departments':
+            console.table(await viewAllDepartments());
     }
 }
 

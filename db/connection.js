@@ -11,6 +11,7 @@ const connection = mysql.createConnection({
   database: "employees"
 });
 
+//where we initiate the promise/promisify, rather than in departments.js...
 connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
