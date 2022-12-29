@@ -2,6 +2,8 @@
 const { prompt } = require("inquirer");
 const db = require("./db/connection");
 const { viewAllDepartments } = require("./db/departments");
+const { viewAllRoles } = require("./db/roles");
+const { viewAllEmployees } = require("./db/employees");
 
 //asking the question and awaiting the response with the switch statement
 const start = async () => {
@@ -27,7 +29,16 @@ const start = async () => {
 
     switch (choice) {
         case 'View all departments':
-            console.table(await viewAllDepartments());
+           const departments = await viewAllDepartments();
+              console.table(departments);
+        case 'View all roles':
+            const roles = await viewAllRoles();
+            console.table(roles);
+        case 'View all employees':
+            const employees = await viewAllEmployees();
+            console.table(employees);
+
+
     }
 }
 
