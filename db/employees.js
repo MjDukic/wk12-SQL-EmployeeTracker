@@ -21,5 +21,5 @@ async function viewAllEmployees() {
 //     }
 // }
 
-module.exports = { viewAllEmployees, addEmployee }
+module.exports = { viewAllEmployees }
 

@@ -1,4 +1,5 @@
 const db = require("./connection");
+const { prompt } = require("inquirer");
 
 async function viewAllDepartments() {
     try {
@@ -12,11 +13,20 @@ async function viewAllDepartments() {
 
 async function addDepartment() {
     try {
-        const addDepartment = await db.query("INSERT INTO department SET ?", department)
-        return addDepartment
+        const { name } = await prompt([
+            {
+                type: "input",
+                name: "name",
+                message: "What is the name of the department you would like to add?"
+            }
+
+        ])
+        await db.query(`INSERT INTO department (name) VALUES ("${name}")`)
+        const addDepartment = await viewAllDepartments();
+        return addDepartment;
     } catch (err) {
         console.log(err)
     }
 }
 
-module.exports = { viewAllDepartments, addDepartment }
+module.exports = { viewAllDepartments, addDepartment };
