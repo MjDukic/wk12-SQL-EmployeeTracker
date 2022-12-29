@@ -16,7 +16,7 @@ async function viewAllEmployees() {
 //enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 async function addEmployee() {
     const roleTitle = await viewAllRoles();
-    const employee = await viewAllEmployees();
+    const employees = await viewAllEmployees();
     try {
         const { first_name, last_name, role, manager } = await prompt([
             {
@@ -31,30 +31,30 @@ async function addEmployee() {
             },
             {
                 type: "list",
+                name: "role",
+                message: "What is the new employees role?",
+                choices: roleTitle.map((role) => {
+                    return {
+                        name: role.title,
+                        value: role.id
+                    }
+                })
+            },
+            {
+                type: "list",
                 name: "manager",
                 message: "Who is the new employees manager?",
-                choices: employee.map((employee) => {
+                choices: employees.map((employee) => {
                     return {
                         name: `${employee.first_name} ${employee.last_name}`,
                         value: employee.id
                     }
                     })
-            },
-            {
-                type: "list",
-                name: "role",
-                message: "What is the new employees role?",
-                choices: roleTitle.map((role) => {
-                    return {
-                        name: role.name,
-                        value: role.name
-                    }
-                })
             }
         
 
         ])
-        await db.query(`INSERT INTO role (first_name, last_name, role, manager) VALUES ("${first_name}", "${last_name}", "${role}", "${manager}")`)
+        await db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${first_name}", "${last_name}", "${role}", "${manager}")`)
         const newEmployee = await viewAllEmployees();
         return newEmployee;
     } catch (err) {
