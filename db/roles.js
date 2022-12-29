@@ -1,5 +1,6 @@
 const db = require("./connection");
 const { prompt } = require("inquirer");
+const { viewAllDepartments, addDepartment } = require("./departments");
 
 async function viewAllRoles() {
     try {
@@ -10,8 +11,9 @@ async function viewAllRoles() {
         console.log(err)
     }
 }
-
+//to add role with department name, need to get the department name from the department table
 async function addRoles() {
+    const departmentName = await viewAllDepartments();
     try {
         const { title, salary, department_id } = await prompt([
             {
@@ -25,13 +27,19 @@ async function addRoles() {
                 message: "What is the salary of this new role?"
             },
             {
-                type: "input",
+                type: "list",
                 name: "department_id",
-                message: "What is the department name of this new role?"
+                message: "What is the department name of this new role?",
+                choices: departmentName.map((department) => {
+                    return {
+                        name: department.name,
+                        value: department.id
+                    }
+                })
             }
 
         ])
-        await db.query(`INSERT INTO role (name, salary, department_id) VALUES ("${title}", "${salary}", "${department_id}")`)
+        await db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${department_id}")`)
         const newRole = await viewAllRoles();
         return newRole;
     } catch (err) {
