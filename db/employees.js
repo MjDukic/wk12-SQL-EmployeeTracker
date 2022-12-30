@@ -54,6 +54,7 @@ async function addEmployee() {
         
 
         ])
+        //important to match the sql names to their proper values ex. role have to say role_id
         await db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${first_name}", "${last_name}", "${role}", "${manager}")`)
         const newEmployee = await viewAllEmployees();
         return newEmployee;
@@ -62,5 +63,42 @@ async function addEmployee() {
     }
 }
 
-module.exports = { viewAllEmployees, addEmployee }
+async function updatedEmployeeRole() {
+    const updatedRole = await viewAllRoles();
+    const updatedEmployee = await viewAllEmployees();
+    try {
+        const { employee, newRole } = await prompt([
+            {
+                type: "list",
+                name: "employee",
+                message: "Who's role would you like to update?",
+                choices: updatedEmployee.map((employee) => {
+                    return {
+                        name: `${employee.first_name} ${employee.last_name}`,
+                        value: employee.id
+                    }
+                })
+            },
+            {
+                type: "list",
+                name: "newRole",
+                message: "What is the new role?",
+                choices: updatedRole.map((role) => {
+                    return {
+                        name: role.title,
+                        value: role.id
+                    }
+                })
+            }
+
+        ])
+        await db.query(`UPDATE employee SET role_id = ("${newRole}") where id = ("${employee}")`)
+        const employeeRoleNew = await viewAllEmployees();
+        return employeeRoleNew;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+module.exports = { viewAllEmployees, addEmployee, updatedEmployeeRole }
 
